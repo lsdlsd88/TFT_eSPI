@@ -7,18 +7,19 @@
            // Get raw z (i.e. pressure) ADC value from touch controller
   uint16_t getTouchRawZ(void);
            // Convert raw x,y values to calibrated and correctly rotated screen coordinates
-  void     convertRawXY(uint16_t *x, uint16_t *y);
+  void     convertRawXY(uint16_t *x, uint16_t *y);// Convert raw x,y values to calibrated and correctly rotated screen coordinates
+  void     convertRawXYBBC(uint16_t *x, uint16_t *y);
            // Get the screen touch coordinates, returns true if screen has been touched
            // if the touch coordinates are off screen then x and y are not updated
            // The returned value can be treated as a bool type, false or 0 means touch not detected
-           // In future the function may return an 8-bit "quality" (jitter) value.
-           // The threshold value is optional, this must be higher than the bias level for z (pressure)
-           // reported by Test_Touch_Controller when the screen is NOT touched. When touched the z value
-           // must be higher than the threshold for a touch to be detected.
+           // In future the function may return an 8 "quality" (jitter) value.
   uint8_t  getTouch(uint16_t *x, uint16_t *y, uint16_t threshold = 600);
+  uint8_t  getTouchBBC(uint16_t *x, uint16_t *y, uint16_t threshold = 600);
 
            // Run screen calibration and test, report calibration values to the serial port
   void     calibrateTouch(uint16_t *data, uint32_t color_fg, uint32_t color_bg, uint8_t size);
+           // Run screen calibration and test, report calibration values to the serial port
+  void     calibrateTouchBBC(uint16_t *data, uint32_t color_fg, uint32_t color_bg, uint8_t size);
            // Set the screen calibration values
   void     setTouch(uint16_t *data);
 
@@ -33,6 +34,8 @@
 
            // Private function to validate a touch, allow settle time and reduce spurious coordinates
   uint8_t  validTouch(uint16_t *x, uint16_t *y, uint16_t threshold = 600);
+           // Private function to validate a touch, allow settle time and reduce spurious coordinates
+  uint8_t  validTouchBBC(uint16_t *x, uint16_t *y, uint16_t threshold = 600);
 
            // Initialise with example calibration values so processor does not crash if setTouch() not called in setup()
   uint16_t touchCalibration_x0 = 300, touchCalibration_x1 = 3600, touchCalibration_y0 = 300, touchCalibration_y1 = 3600;
